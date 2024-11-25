@@ -13,6 +13,7 @@ int main(int argc, char **argv)
         return 0;
     }
     string configurationFile = argv[1];
+    
     Settlement s1("Kfar",SettlementType::VILLAGE);
     cout << s1.toString() << endl;
 
