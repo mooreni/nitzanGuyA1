@@ -1,6 +1,6 @@
 #include "Settlement.h"
 
-Settlement::Settlement(const string& name, SettlementType type) : name(name), type(type)
+Settlement::Settlement(const string& name, SettlementType type) : name(name) , type(type)
 {
 }
 
