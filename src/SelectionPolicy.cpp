@@ -62,7 +62,7 @@ int BalancedSelection::CalculateDistance(const FacilityType &f)
     int life(LifeQualityScore + f.getLifeQualityScore());
     int eco(EconomyScore + f.getEconomyScore());
     int env(EnvironmentScore + f.getEnvironmentScore());
-    return (std::max(life, eco, env) - std::min(life, eco, env));
+    return (std::max(std::max(life, eco), env) - std::min(std::min(life, eco), env));
 }
 
 const string BalancedSelection::toString() const
