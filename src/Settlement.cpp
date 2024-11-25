@@ -1,20 +1,28 @@
 #include "Settlement.h"
 
-Settlement::Settlement(const string &name, SettlementType type)
+Settlement::Settlement(const string& name, SettlementType type) : name(name), type(type)
 {
 }
 
-const string &Settlement::getName() const
+const string& Settlement::getName() const
 {
-    // TODO: insert return statement here
+    return name;
 }
 
 SettlementType Settlement::getType() const
 {
-    return SettlementType();
+    return type;
 }
 
 const string Settlement::toString() const
 {
-    return string();
+    string ret ("Settlement Name: " + getName() + ", Type: ");
+    SettlementType tempType = getType();
+    if(tempType==SettlementType::CITY)
+        ret.append("City");
+    else if(tempType==SettlementType::METROPOLIS)
+        ret.append("Metropolis");
+    else if(tempType==SettlementType::VILLAGE)
+        ret.append("Village");
+    return ret;
 }
