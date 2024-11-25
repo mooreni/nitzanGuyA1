@@ -3,6 +3,7 @@
 #include "Facility.h"
 #include "Settlement.h"
 #include "SelectionPolicy.h"
+#include <iostream>
 using std::vector;
 
 enum class PlanStatus {
@@ -22,6 +23,7 @@ class Plan {
         const vector<Facility*> &getFacilities() const;
         void addFacility(Facility* facility);
         const string toString() const;
+        const string toString(PlanStatus status) const;
 
     private:
         int plan_id;

@@ -32,18 +32,35 @@ void Plan::step()
 
 void Plan::printStatus()
 {
+    std::cout << "The current status is: " << toString(status) << "\n";
 }
 
 const vector<Facility *> &Plan::getFacilities() const
 {
-    // TODO: insert return statement here
+    return facilities;
 }
 
 void Plan::addFacility(Facility *facility)
 {
+
+}
+
+
+const string Plan::toString(PlanStatus status) const
+{
+    switch (status)
+    {
+        case PlanStatus::AVALIABLE:   return "Available";
+        case PlanStatus::BUSY: return "Busy"; 
+    }
+
 }
 
 const string Plan::toString() const
 {
-    return string();
+    return string("Plan Id: " + std::to_string(plan_id) + "\n" +
+                "Settlement name: " + settlement->getName() + "\n" +
+                "Selection policy: " + selectionPolicy->toString() + "\n" +
+                "Plan status: " + Plan::toString(status) + "\n");
+
 }
