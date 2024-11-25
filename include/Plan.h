@@ -28,6 +28,7 @@ class Plan {
         const Settlement *settlement;
         SelectionPolicy *selectionPolicy; //What happens if we change this to a reference?
         PlanStatus status;
+        const int numFacilitiesAtTime;
         vector<Facility*> facilities;
         vector<Facility*> underConstruction;
         const vector<FacilityType> &facilityOptions;

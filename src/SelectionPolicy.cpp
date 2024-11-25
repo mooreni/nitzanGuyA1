@@ -72,7 +72,7 @@ const string BalancedSelection::toString() const
 
 BalancedSelection *BalancedSelection::clone() const
 {
-    // to implement
+    return new BalancedSelection(*this);
 }
 
 
@@ -104,7 +104,7 @@ const string EconomySelection::toString() const
 
 EconomySelection *EconomySelection::clone() const
 {
-    // to implement
+    return new EconomySelection(*this);
 }
 
 
@@ -134,5 +134,5 @@ const string SustainabilitySelection::toString() const
 
 SustainabilitySelection *SustainabilitySelection::clone() const
 {
-    // to implement
+    return new SustainabilitySelection(*this);
 }
