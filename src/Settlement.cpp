@@ -24,5 +24,5 @@ const string Settlement::toString() const
         ret.append("Metropolis");
     else if(tempType==SettlementType::VILLAGE)
         ret.append("Village");
-    return
+    return ret;
 }
