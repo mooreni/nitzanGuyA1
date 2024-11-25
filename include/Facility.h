@@ -9,11 +9,14 @@ enum class FacilityStatus {
     OPERATIONAL,
 };
 
+
 enum class FacilityCategory {
     LIFE_QUALITY,
     ECONOMY,
     ENVIRONMENT,
 };
+
+
 
 
 class FacilityType {
@@ -48,6 +51,8 @@ class Facility: public FacilityType {
         void setStatus(FacilityStatus status);
         const FacilityStatus& getStatus() const;
         const string toString() const;
+        const string toString(FacilityCategory category) const; 
+        const string toString(FacilityStatus status) const;
 
     private:
         const string settlementName;
