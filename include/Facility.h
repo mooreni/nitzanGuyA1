@@ -51,6 +51,7 @@ class Facility: public FacilityType {
         void setStatus(FacilityStatus status);
         const FacilityStatus& getStatus() const;
         const string toString() const;
+        //Added Functions
         const string toString(FacilityCategory category) const; 
         const string toString(FacilityStatus status) const;
 

@@ -22,7 +22,7 @@ const string NaiveSelection::toString() const
 
 NaiveSelection *NaiveSelection::clone() const
 {
-    // to implement
+    return new NaiveSelection(*this);
 }
 
 
@@ -40,7 +40,7 @@ const FacilityType &BalancedSelection::selectFacility(const vector<FacilityType>
     int chosenIndex(0);
     int bestDistance(CalculateDistance(facilitiesOptions[0]));
     bool flag(false);
-    for (int i = 1; i < facilitiesOptions.size() & !flag; i++)
+    for (unsigned int i = 1; (i < facilitiesOptions.size()) & (!flag); i++)
     {
         if (bestDistance == 0)
             flag = true;
@@ -54,6 +54,9 @@ const FacilityType &BalancedSelection::selectFacility(const vector<FacilityType>
             }
         }
     }
+    LifeQualityScore+=facilitiesOptions[chosenIndex].getLifeQualityScore();
+    EconomyScore+=facilitiesOptions[chosenIndex].getEconomyScore();
+    EnvironmentScore+=facilitiesOptions[chosenIndex].getEnvironmentScore();
     return facilitiesOptions[chosenIndex];
 }
 
@@ -70,7 +73,7 @@ const string BalancedSelection::toString() const
     return ("Selection Logic: Balanced");
 }
 
-BalancedSelection *BalancedSelection::clone() const
+BalancedSelection* BalancedSelection::clone() const
 {
     return new BalancedSelection(*this);
 }
@@ -86,7 +89,7 @@ EconomySelection::EconomySelection(): lastSelectedIndex(-1)
 const FacilityType &EconomySelection::selectFacility(const vector<FacilityType> &facilitiesOptions)
 {
     bool flag (false);
-    for(int i=lastSelectedIndex+1;!flag;i++){
+    for(unsigned int i=lastSelectedIndex+1;!flag;i++){
         if(i>=facilitiesOptions.size())
             i=0;
         if(facilitiesOptions[i].getCategory()==FacilityCategory::ECONOMY){
@@ -117,7 +120,7 @@ SustainabilitySelection::SustainabilitySelection(): lastSelectedIndex(-1)
 const FacilityType &SustainabilitySelection::selectFacility(const vector<FacilityType> &facilitiesOptions)
 {
     bool flag (false);
-    for(int i=lastSelectedIndex+1;!flag;i++){
+    for(unsigned int i=lastSelectedIndex+1;!flag;i++){
         if(i>=facilitiesOptions.size())
             i=0;
         if(facilitiesOptions[i].getCategory()==FacilityCategory::ENVIRONMENT){

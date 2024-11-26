@@ -24,15 +24,23 @@ class Plan {
         void addFacility(Facility* facility);
         const string toString() const;
         const string toString(PlanStatus status) const;
+        //Rule of Five
+        ~Plan();
+        Plan (const Plan& other);
+        Plan& operator=(const Plan& other) = delete; 
+        Plan (Plan&& other);
+        Plan& operator=(Plan&& other) = delete;
 
     private:
         int plan_id;
-        const Settlement *settlement;
-        SelectionPolicy *selectionPolicy; //What happens if we change this to a reference?
+        const Settlement* settlement;
+        SelectionPolicy* selectionPolicy; //What happens if we change this to a reference?
         PlanStatus status;
-        const int numFacilitiesAtTime;
         vector<Facility*> facilities;
         vector<Facility*> underConstruction;
         const vector<FacilityType> &facilityOptions;
         int life_quality_score, economy_score, environment_score;
+
+        int numFacilitiesAtTime; //Added Variable
+
 };

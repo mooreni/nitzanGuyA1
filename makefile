@@ -4,7 +4,7 @@ all: clean link
 
 link: compile
 	@echo "Linking object files."
-	g++ -o bin/simulation bin/main.o bin/Settlement.o bin/SelectionPolicy.o bin/Facility.o
+	g++ -o bin/simulation bin/main.o bin/Settlement.o bin/Facility.o bin/SelectionPolicy.o bin/Plan.o
 
 compile: src/main.cpp
 	@echo "Compiling binary files."
@@ -12,7 +12,7 @@ compile: src/main.cpp
 	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Settlement.o src/Settlement.cpp
 	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/SelectionPolicy.o src/SelectionPolicy.cpp
 	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Facility.o src/Facility.cpp
-
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Plan.o src/Plan.cpp
 
 clean:
 	@echo "Cleaning bin directory."
