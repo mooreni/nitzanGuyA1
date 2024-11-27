@@ -115,6 +115,6 @@ const string Facility::toString() const
                   "Life quality score: " + std::to_string(lifeQuality_score) + "\n" +
                   "Economy score: " + std::to_string(economy_score) + "\n" +
                   "Environment score: " + std::to_string(environment_score) + "\n" +
-                  "Constraction status: " + ::toString(status) + "\n" +
-                  "Remaining constraction time: " + std::to_string(timeLeft) + "\n");
+                  "Construction status: " + ::toString(status) + "\n" +
+                  "Remaining construction time: " + std::to_string(timeLeft) + "\n");
 }

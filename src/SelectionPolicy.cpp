@@ -10,7 +10,7 @@ NaiveSelection::NaiveSelection() : lastSelectedIndex(-1)
 const FacilityType &NaiveSelection::selectFacility(const vector<FacilityType> &facilitiesOptions)
 {
     lastSelectedIndex++;
-    if (lastSelectedIndex >= facilitiesOptions.size())
+    if (static_cast<std::size_t>(lastSelectedIndex) >= facilitiesOptions.size())
         lastSelectedIndex = 0;
     return facilitiesOptions[lastSelectedIndex];
 }

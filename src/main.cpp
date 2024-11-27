@@ -4,6 +4,7 @@
 using namespace std;
 
 // Simulation* backup = nullptr;
+void test();
 
 int main(int argc, char **argv)
 {
@@ -14,13 +15,8 @@ int main(int argc, char **argv)
     }
     string configurationFile = argv[1];
     
-    Settlement s1("Kfar",SettlementType::VILLAGE);
-    cout << s1.toString() << endl;
-    std::vector<FacilityType> options = {Facility("Hotel", "Kfar", FacilityCategory::ECONOMY, 5, 1,1,1)};
-    SelectionPolicy* s = new NaiveSelection();
-    cout << s->toString() << endl;
-    Plan* p = new Plan(5, s1, s, options);
-    cout << p->toString() << endl;
+    test();
+
     /*Simulation simulation(configurationFile);
      simulation.start();
      if(backup!=nullptr){
@@ -28,4 +24,29 @@ int main(int argc, char **argv)
          backup = nullptr;
      }*/
     return 0;
+}
+
+void test(){
+    Settlement s1("Kfar",SettlementType::VILLAGE);
+    cout << s1.toString() << endl;
+    std::vector<FacilityType> options = {FacilityType("Hotel", FacilityCategory::ECONOMY, 1, 1,2,1), 
+                                        FacilityType("Park", FacilityCategory::ENVIRONMENT, 2, 2, 3, 2),
+                                        FacilityType("School", FacilityCategory::LIFE_QUALITY, 2, 2, 1, 3)};
+    SelectionPolicy* s = new BalancedSelection(0,0,0);
+    Plan* p = new Plan(1, s1, s, options);
+    cout << p->toString() << endl;
+    p->step();
+    vector<Facility*> vec = p->getFacilities();
+    for (unsigned int i = 0; i < vec.size(); i++)
+    {
+        cout << vec[i]->toString() << endl;
+    }
+    p->step();
+    p->step();
+    vec = p->getFacilities();
+    for (unsigned int i = 0; i < vec.size(); i++)
+    {
+        cout << vec[i]->toString() << endl;
+    }
+    cout << p->toString() << endl;
 }
