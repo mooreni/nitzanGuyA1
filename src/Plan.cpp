@@ -1,4 +1,5 @@
 #include "Plan.h"
+#include <sstream>
 
 Plan::Plan(const int planId, const Settlement& settlement, SelectionPolicy* selectionPolicy, const vector<FacilityType>& facilityOptions):
 plan_id(planId), settlement(&settlement), selectionPolicy(selectionPolicy), status(PlanStatus::AVALIABLE), facilities(), underConstruction(),
@@ -84,11 +85,18 @@ void Plan::addFacility(Facility* facility)
 
 const string Plan::toString() const
 {
-    return string("Plan Id: " + std::to_string(plan_id) + "\n" +
-                "Settlement name: " + settlement->getName() + "\n" +
-                "Selection policy: " + selectionPolicy->toString() + "\n" +
-                "Plan status: " + Plan::toString(status) + "\n");
+    std::ostringstream s;
+        s << "Plan Id: " << plan_id << "\n"
+        << "Settlement name: " << settlement->getName() << "\n"
+        << "Plan status: " << Plan::toString(status) << "\n"
+        << "Selection policy: " << selectionPolicy->toString() << "\n"
+        << "LifeQualityScore: " << life_quality_score << "\n"
+        << "EconomyScore: " << economy_score << "\n"
+        << "EnvironmentScore: " << environment_score << "\n"
+        << Plan::toString(facilities) << "\n"
+        << Plan::toString(underConstruction);
 
+    return s.str();
 }
 
 const string Plan::toString(PlanStatus status) const
@@ -101,8 +109,23 @@ const string Plan::toString(PlanStatus status) const
     return "";
 }
 
+const string Plan::toString(vector<Facility*> facilities) const
+{
+ std::ostringstream s;
+
+    for(unsigned int i = 0; i < facilities.size(); i++){
+        if (i > 0) {
+            s << "\n";
+        }
+        s << "FacilityName: " << facilities[i]->getName() << "\n"
+        << "FacilityStatus: " << facilities[i]->toString(facilities[i]->getStatus());
+    }
+    return s.str();
+}
+
 
 //Rule of Five
+//Destructor
 Plan::~Plan()
 {
     delete selectionPolicy;
@@ -114,6 +137,7 @@ Plan::~Plan()
     }
 }
 
+//Copy Constructor
 Plan::Plan(const Plan &other) : plan_id(other.plan_id), settlement(other.settlement), 
 selectionPolicy(other.selectionPolicy->clone()), status(other.status), facilities(), underConstruction(),
 facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
@@ -128,6 +152,7 @@ numFacilitiesAtTime((static_cast<int>(other.settlement->getType()))+1)
     }
 }
 
+//Move Constructor
 Plan::Plan(Plan&& other):plan_id(other.plan_id), settlement(other.settlement), 
 selectionPolicy(other.selectionPolicy), status(other.status), facilities(other.facilities),
 underConstruction(other.underConstruction),facilityOptions(other.facilityOptions), 

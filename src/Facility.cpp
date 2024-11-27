@@ -78,8 +78,21 @@ const FacilityStatus& Facility::getStatus() const
 {
     return status;
 }
+    
+const string Facility::toString() const
+{
+    return string("Facility name: " + name + "\n" +
+                  "Settlement name: " + settlementName + "\n" +
+                  "Category: " + Facility::toString(category) + "\n" +
+                  "Price: " + std::to_string(price) + "\n" +
+                  "Life quality score: " + std::to_string(lifeQuality_score) + "\n" +
+                  "Economy score: " + std::to_string(economy_score) + "\n" +
+                  "Environment score: " + std::to_string(environment_score) + "\n" +
+                  "Construction status: " + Facility::toString(status) + "\n" +
+                  "Remaining construction time: " + std::to_string(timeLeft) + "\n");
+}
 
-const string toString(FacilityCategory category)
+const string Facility::toString(FacilityCategory category) const
 {
     switch (category)
     {
@@ -93,7 +106,7 @@ const string toString(FacilityCategory category)
     return "";
 }
 
-const string toString(FacilityStatus status)
+const string Facility::toString(FacilityStatus status) const
 {
     switch (status)
     {
@@ -103,18 +116,4 @@ const string toString(FacilityStatus status)
             return "Operational";
     }
     return "";
-
-}
-
-const string Facility::toString() const
-{
-    return string("Facility name: " + name + "\n" +
-                  "Settlement name: " + settlementName + "\n" +
-                  "Category: " + ::toString(category) + "\n" +
-                  "Price: " + std::to_string(price) + "\n" +
-                  "Life quality score: " + std::to_string(lifeQuality_score) + "\n" +
-                  "Economy score: " + std::to_string(economy_score) + "\n" +
-                  "Environment score: " + std::to_string(environment_score) + "\n" +
-                  "Construction status: " + ::toString(status) + "\n" +
-                  "Remaining construction time: " + std::to_string(timeLeft) + "\n");
 }
