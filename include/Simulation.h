@@ -4,6 +4,8 @@
 #include "Facility.h"
 #include "Plan.h"
 #include "Settlement.h"
+#include "Auxiliary.h"
+#include <fstream>
 using std::string;
 using std::vector;
 
@@ -24,6 +26,8 @@ class Simulation {
         void step();
         void close();
         void open();
+        //Added Functions
+        void readConfig(const string &configFilePath);
 
     private:
         bool isRunning;

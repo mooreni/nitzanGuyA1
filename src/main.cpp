@@ -14,17 +14,19 @@ int main(int argc, char **argv)
         return 0;
     }
     string configurationFile = argv[1];
-    
-    test();
+    Simulation simulation(configurationFile);
+    //test();
 
-    /*Simulation simulation(configurationFile);
-     simulation.start();
+    /*simulation.start();
      if(backup!=nullptr){
          delete backup;
          backup = nullptr;
      }*/
     return 0;
 }
+
+
+
 
 void test(){
     Settlement s1("Kfar",SettlementType::VILLAGE);
