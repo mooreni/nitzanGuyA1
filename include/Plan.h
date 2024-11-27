@@ -41,6 +41,6 @@ class Plan {
         const vector<FacilityType> &facilityOptions;
         int life_quality_score, economy_score, environment_score;
 
-        int numFacilitiesAtTime; //Added Variable
+        unsigned int numFacilitiesAtTime; //Added Variable
 
 };

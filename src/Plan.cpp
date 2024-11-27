@@ -38,7 +38,7 @@ void Plan::step()
         }
     }
 
-    for(int i=0;i<underConstruction.size();i++){
+    for(unsigned int i=0;i<underConstruction.size();){
         FacilityStatus s = underConstruction[i]->step();
         if(s==FacilityStatus::OPERATIONAL){
             addFacility(underConstruction[i]);
@@ -46,6 +46,9 @@ void Plan::step()
             economy_score+=underConstruction[i]->getEconomyScore();
             environment_score+=underConstruction[i]->getEnvironmentScore();
             underConstruction.erase(underConstruction.begin()+i);
+        }
+        else{
+            i++;
         }
     }
     
@@ -103,10 +106,10 @@ const string Plan::toString(PlanStatus status) const
 Plan::~Plan()
 {
     delete selectionPolicy;
-    for(int i=0;i<facilities.size();i++){
+    for(unsigned int i=0;i<facilities.size();i++){
         delete facilities[i];
     }
-    for(int i=0;i<underConstruction.size();i++){
+    for(unsigned int i=0;i<underConstruction.size();i++){
         delete underConstruction[i];
     }
 }
@@ -117,14 +120,13 @@ facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_sc
 economy_score(other.economy_score),environment_score(other.environment_score), 
 numFacilitiesAtTime((static_cast<int>(other.settlement->getType()))+1)
 {
-    for(int i=0;i<other.facilities.size();i++){
+    for(unsigned int i=0;i<other.facilities.size();i++){
         facilities.push_back(new Facility(*other.facilities[i]));
     }
-    for(int i=0;i<other.underConstruction.size();i++){
+    for(unsigned int i=0;i<other.underConstruction.size();i++){
         underConstruction.push_back(new Facility(*other.underConstruction[i]));
     }
 }
-
 
 Plan::Plan(Plan&& other):plan_id(other.plan_id), settlement(other.settlement), 
 selectionPolicy(other.selectionPolicy), status(other.status), facilities(other.facilities),
