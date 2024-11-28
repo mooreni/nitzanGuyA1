@@ -25,6 +25,20 @@ const int Plan::getEnvironmentScore() const
 
 void Plan::setSelectionPolicy(SelectionPolicy* selectionPolicy)
 {
+    if(typeid(*selectionPolicy) == typeid(BalancedSelection)){ //Checks selection Policy type
+        int life = this->getlifeQualityScore(); //gets current plan's scores
+        int eco = this->getEconomyScore();
+        int env = this->getEnvironmentScore();
+        //Updates these scores with what the underconstruction facilities will give
+        for(unsigned int i=0;i<underConstruction.size();i++){
+            life+=underConstruction[i]->getLifeQualityScore();
+            eco+=underConstruction[i]->getEconomyScore();
+            env+=underConstruction[i]->getEnvironmentScore();
+        }
+        //casts safely to Balanced Selection and gives it it's new fields
+        (static_cast<BalancedSelection*>(selectionPolicy))->setFields(life,eco,env);
+    }
+    //Deletes the old selection policy and sets plan's current one as the new one
     delete this->selectionPolicy;
     this->selectionPolicy = selectionPolicy;
 }
