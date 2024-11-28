@@ -26,3 +26,8 @@ const string Settlement::toString() const
         ret.append("Village");
     return ret;
 }
+
+Settlement *Settlement::clone() const
+{
+    return new Settlement(name,this->getType());
+}

@@ -26,10 +26,13 @@ class Plan {
         //Added functions
         const string toString(const PlanStatus& status) const;
         const string toString(const vector<Facility*>& facilities) const;
+        const string getSettlmentName() const;
+        int getId() const;
+        
         //Rule of Five
         ~Plan();
         Plan (const Plan& other);
-        Plan& operator=(const Plan& other) = delete; 
+        Plan& operator=(const Plan& other); 
         Plan (Plan&& other);
         Plan& operator=(Plan&& other) = delete;
 

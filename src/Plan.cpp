@@ -137,6 +137,15 @@ const string Plan::toString(const vector<Facility*>& facilities) const
     return s.str();
 }
 
+const string Plan::getSettlmentName() const
+{
+    return settlement->getName();
+}
+
+int Plan::getId() const
+{
+    return plan_id;
+}
 
 //Rule of Five
 //Destructor
@@ -164,6 +173,33 @@ numFacilitiesAtTime((static_cast<int>(other.settlement->getType()))+1)
     for(unsigned int i=0;i<other.underConstruction.size();i++){
         underConstruction.push_back(new Facility(*other.underConstruction[i]));
     }
+}
+
+Plan &Plan::operator=(const Plan &other)
+{
+    if(&other!=this){
+        plan_id = other.plan_id;
+        selectionPolicy = other.selectionPolicy->clone();
+        status = other.status;
+        for(unsigned int i=0;i<facilities.size();i++){
+            delete facilities[i];
+        }
+        facilities.clear();
+        for(unsigned int i=0;i<other.facilities.size();i++){
+            facilities.push_back(new Facility(*other.facilities[i]));
+        }
+        for(unsigned int i=0;i<underConstruction.size();i++){
+            delete underConstruction[i];
+        }
+        underConstruction.clear();
+        for(unsigned int i=0;i<other.underConstruction.size();i++){
+            underConstruction.push_back(new Facility(*other.underConstruction[i]));
+        }
+        life_quality_score=other.life_quality_score;
+        economy_score=other.economy_score;
+        environment_score=other.environment_score;
+    }
+    return *this;
 }
 
 //Move Constructor

@@ -6,6 +6,7 @@
 #include "Settlement.h"
 #include "Auxiliary.h"
 #include <fstream>
+//#include "Action.h"
 using std::string;
 using std::vector;
 
@@ -29,6 +30,12 @@ class Simulation {
         //Added Functions
         void readConfig(const string &configFilePath);
         SelectionPolicy* definePolicy(const string& policyShortcut); 
+        //Rule of Five
+        ~Simulation();
+        Simulation(const Simulation& other);
+        Simulation& operator=(const Simulation& other);
+        Simulation(const Simulation&& other);
+        Simulation& operator=(const Simulation&& other);
 
     private:
         bool isRunning;
