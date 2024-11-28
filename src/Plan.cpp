@@ -99,7 +99,7 @@ const string Plan::toString() const
     return s.str();
 }
 
-const string Plan::toString(PlanStatus status) const
+const string Plan::toString(const PlanStatus& status) const
 {
     switch (status)
     {
@@ -109,7 +109,7 @@ const string Plan::toString(PlanStatus status) const
     return "";
 }
 
-const string Plan::toString(vector<Facility*> facilities) const
+const string Plan::toString(const vector<Facility*>& facilities) const
 {
  std::ostringstream s;
 

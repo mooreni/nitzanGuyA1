@@ -52,8 +52,8 @@ class Facility: public FacilityType {
         const FacilityStatus& getStatus() const;
         const string toString() const;
         //Added Functions
-        const string toString(FacilityCategory category) const; 
-        const string toString(FacilityStatus status) const;
+        const string toString(const FacilityCategory& category) const; 
+        const string toString(const FacilityStatus& status) const;
 
     private:
         const string settlementName;

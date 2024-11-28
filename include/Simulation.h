@@ -28,6 +28,7 @@ class Simulation {
         void open();
         //Added Functions
         void readConfig(const string &configFilePath);
+        SelectionPolicy* definePolicy(const string& policyShortcut); 
 
     private:
         bool isRunning;

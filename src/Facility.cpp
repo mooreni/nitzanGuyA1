@@ -38,7 +38,7 @@ FacilityCategory FacilityType::getCategory() const
 
 //=========================================================
 // Facility Class
-Facility::Facility(const string &name, const string &settlementName, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score) 
+Facility::Facility(const string& name, const string& settlementName, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score) 
 : FacilityType(name, category, price, lifeQuality_score, economy_score, environment_score), settlementName(settlementName), status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(price)
 {
 }
@@ -92,7 +92,7 @@ const string Facility::toString() const
                   "Remaining construction time: " + std::to_string(timeLeft) + "\n");
 }
 
-const string Facility::toString(FacilityCategory category) const
+const string Facility::toString(const FacilityCategory& category) const
 {
     switch (category)
     {
@@ -106,7 +106,7 @@ const string Facility::toString(FacilityCategory category) const
     return "";
 }
 
-const string Facility::toString(FacilityStatus status) const
+const string Facility::toString(const FacilityStatus& status) const
 {
     switch (status)
     {

@@ -24,8 +24,8 @@ class Plan {
         void addFacility(Facility* facility);
         const string toString() const;
         //Added functions
-        const string toString(PlanStatus status) const;
-        const string toString(vector<Facility*> facilities) const;
+        const string toString(const PlanStatus& status) const;
+        const string toString(const vector<Facility*>& facilities) const;
         //Rule of Five
         ~Plan();
         Plan (const Plan& other);
