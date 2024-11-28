@@ -78,7 +78,12 @@ BalancedSelection* BalancedSelection::clone() const
     return new BalancedSelection(*this);
 }
 
-
+void BalancedSelection::setFields(int life, int eco, int env)
+{
+    LifeQualityScore=life;
+    EconomyScore=eco;
+    EnvironmentScore=env;
+}
 
 //=========================================================
 // Economy Selection
