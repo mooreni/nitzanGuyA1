@@ -200,7 +200,7 @@ Plan::~Plan()
 }
 
 //Copy Constructor
-Plan::Plan(const Plan &other) : plan_id(other.plan_id), settlement(other.settlement->clone()), 
+Plan::Plan(const Plan &other) : plan_id(other.plan_id), settlement(other.settlement), 
 selectionPolicy(other.selectionPolicy->clone()), status(other.status), facilities(), underConstruction(),
 facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
 economy_score(other.economy_score),environment_score(other.environment_score), 

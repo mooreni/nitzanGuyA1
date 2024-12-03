@@ -222,19 +222,13 @@ Simulation::~Simulation()
 //Copy Constructor
 Simulation::Simulation(const Simulation &other) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
 isRunning(other.isRunning), planCounter(other.planCounter), 
-actionsLog(), plans(), settlements(), facilitiesOptions(other.facilitiesOptions)
+actionsLog(), plans(other.plans), settlements(), facilitiesOptions(other.facilitiesOptions)
 {
     for(unsigned int i=0;i<other.actionsLog.size();i++){
         actionsLog.push_back(other.actionsLog[i]->clone());
     }
     for(unsigned int i=0;i<other.settlements.size();i++){
         settlements.push_back(other.settlements[i]->clone());
-    }
-    for(unsigned int i=0;i<other.plans.size();i++){
-        Settlement* sett = this->getSettlement(other.plans[i].getSettlmentName());
-        Plan p (-1,*sett,nullptr,this->facilitiesOptions);
-        p.partialMovePlan(other.plans[i]);
-        plans.push_back(p);
     }
 }
 
