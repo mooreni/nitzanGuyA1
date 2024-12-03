@@ -5,6 +5,7 @@
 using std::string;
 using namespace std;
 
+class Simulation;
 enum class SettlementType;
 enum class FacilityCategory;
 

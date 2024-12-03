@@ -36,10 +36,11 @@ class Simulation {
         ~Simulation();
         Simulation(const Simulation& other);
         Simulation& operator=(const Simulation& other);
-        Simulation(const Simulation&& other);
-        Simulation& operator=(const Simulation&& other);
+        Simulation(Simulation&& other);
+        Simulation& operator=(Simulation&& other);
 
     private:
+        Plan nullPlan;
         bool isRunning;
         int planCounter; //For assigning unique plan IDs
         vector<BaseAction*> actionsLog;

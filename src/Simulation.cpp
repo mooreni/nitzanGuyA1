@@ -9,11 +9,13 @@ To Do:
     2.Rule of 5: Destructor-V, CopyConstruct-V, operator=-V, CopyConstruct2-V, operator=2-V, 
 */
 
-Simulation::Simulation(const string &configFilePath) : isRunning(false), planCounter(0), actionsLog(), plans(), settlements(), facilitiesOptions()
+Simulation::Simulation(const string &configFilePath) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
+isRunning(false), planCounter(0), actionsLog(), plans(), settlements(), facilitiesOptions()
+
 {
     readConfig(configFilePath);
 }
-
+ 
 vector<BaseAction*> Simulation::getActionsLog()
 {
     return actionsLog;
@@ -77,6 +79,42 @@ void Simulation::start()
         string userInput;
         getline(std::cin, userInput);
         vector<string> parsedArgs = Auxiliary::parseArguments(userInput);
+        BaseAction* action;
+        if(parsedArgs[0]=="step"){
+            action = new SimulateStep(stoi(parsedArgs[1]));
+        }
+        else if(parsedArgs[0]=="plan"){
+            action = new AddPlan(parsedArgs[1], parsedArgs[2]);
+        }
+        else if(parsedArgs[0]=="settlement"){
+            action = new AddSettlement(parsedArgs[1], static_cast<SettlementType>(stoi(parsedArgs[2])));
+        }
+        else if(parsedArgs[0]=="facility"){
+            action = new AddFacility(parsedArgs[1], static_cast<FacilityCategory>(stoi(parsedArgs[2])),stoi(parsedArgs[3]),stoi(parsedArgs[4]),stoi(parsedArgs[5]),stoi(parsedArgs[6]) );
+        }
+        else if(parsedArgs[0]=="planStatus"){
+            action = new PrintPlanStatus(stoi(parsedArgs[1]));
+        }
+        else if(parsedArgs[0]=="changePolicy"){
+            action = new ChangePlanPolicy(stoi(parsedArgs[1]), parsedArgs[2]);
+        }
+        else if(parsedArgs[0]=="log"){
+            action = new PrintActionsLog();
+        }
+        else if(parsedArgs[0]=="close"){
+            action = new Close();
+        }
+        else if(parsedArgs[0]=="backup"){
+            action = new BackupSimulation();
+        }
+        else if(parsedArgs[0]=="restore"){
+            action = new RestoreSimulation();
+        }
+        else{
+            cout<< "Action doesnt exist" ;
+        }
+        action->act(*this);
+        actionsLog.push_back(action);
         //This will understand what action is called for now, and call to addAction
     } 
 }
@@ -148,11 +186,7 @@ Plan& Simulation::getPlan(const int planID)
     }
     //Creating Null plan to emphasize that the wanted plan wasn't found
     //Can be identified by planId -1 or by settlementName "Null"
-    Settlement s("Null", SettlementType::VILLAGE);
-    NaiveSelection* nve = new NaiveSelection();
-    vector<FacilityType> vec;
-    Plan p(-1,s,nve,vec);
-    return p;
+    return nullPlan;
 }
 
 void Simulation::step() 
@@ -190,7 +224,8 @@ Simulation::~Simulation()
 }
 
 //Copy Constructor
-Simulation::Simulation(const Simulation &other) : isRunning(other.isRunning), planCounter(other.planCounter), 
+Simulation::Simulation(const Simulation &other) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
+isRunning(other.isRunning), planCounter(other.planCounter), 
 actionsLog(), plans(other.plans), settlements(), facilitiesOptions(other.facilitiesOptions)
 {
     for(unsigned int i=0;i<other.actionsLog.size();i++){
@@ -243,14 +278,14 @@ Simulation &Simulation::operator=(const Simulation &other)
 }
 
 //Move Constructor
-Simulation::Simulation(const Simulation &&other):
+Simulation::Simulation(Simulation &&other): nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()),
 isRunning(other.isRunning), planCounter(other.planCounter), actionsLog(move(other.actionsLog)), plans(move(other.plans)),
 settlements(move(other.settlements)), facilitiesOptions(move(other.facilitiesOptions))
 {
 }
 
 //Move Assignment Operator
-Simulation &Simulation::operator=(const Simulation &&other)
+Simulation &Simulation::operator=(Simulation &&other)
 {
     if(this != &other){
         //Transfering simple objects by value

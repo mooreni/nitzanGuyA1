@@ -243,7 +243,7 @@ PrintActionsLog::PrintActionsLog(): BaseAction()
 void PrintActionsLog::act(Simulation &simulation)
 {
     vector<BaseAction*> vec = simulation.getActionsLog();
-    for(int i=0; i<vec.size(); i++){
+    for(unsigned int i=0; i<vec.size(); i++){
         cout << vec[i]->toString();
     }
     complete();
