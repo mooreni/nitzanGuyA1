@@ -1,5 +1,5 @@
 #include "Facility.h"
-
+#include <sstream>
 // FacilityType Class
 FacilityType::FacilityType(const string& name, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score) 
 : name(name), category(category), price(price), lifeQuality_score(lifeQuality_score), economy_score(economy_score), environment_score(environment_score)
@@ -36,6 +36,18 @@ FacilityCategory FacilityType::getCategory() const
     return category;
 }
 
+const string FacilityType::toString() const
+{
+    std::ostringstream s;
+    s << "Facility name: " << name << "\n"
+    << "Category: " << FacilityType::toString(category) << "\n"
+    << "Price: " << std::to_string(price) << "\n" 
+    << "Life quality score: " << std::to_string(lifeQuality_score) << "\n"
+    << "Economy score: " << std::to_string(economy_score) << "\n" 
+    << "Environment score: " << std::to_string(environment_score) << "\n";
+    return s.str();
+}
+
 //=========================================================
 // Facility Class
 Facility::Facility(const string& name, const string& settlementName, const FacilityCategory category, const int price, const int lifeQuality_score, const int economy_score, const int environment_score) 
@@ -46,7 +58,6 @@ Facility::Facility(const string& name, const string& settlementName, const Facil
 Facility::Facility(const FacilityType& type, const string& settlementName) 
 : FacilityType(type), settlementName(settlementName), status(FacilityStatus::UNDER_CONSTRUCTIONS), timeLeft(type.getCost())
 {
-    // should check if time starts with price-1
 }
 
 const string& Facility::getSettlementName() const
@@ -81,18 +92,20 @@ const FacilityStatus& Facility::getStatus() const
     
 const string Facility::toString() const
 {
-    return string("Facility name: " + name + "\n" +
-                  "Settlement name: " + settlementName + "\n" +
-                  "Category: " + Facility::toString(category) + "\n" +
-                  "Price: " + std::to_string(price) + "\n" +
-                  "Life quality score: " + std::to_string(lifeQuality_score) + "\n" +
-                  "Economy score: " + std::to_string(economy_score) + "\n" +
-                  "Environment score: " + std::to_string(environment_score) + "\n" +
-                  "Construction status: " + Facility::toString(status) + "\n" +
-                  "Remaining construction time: " + std::to_string(timeLeft) + "\n");
+    std::ostringstream s;
+    s << "Facility name: " << name << "\n"
+    << "Settlement name: " << settlementName << "\n" 
+    << "Category: " << FacilityType::toString(category) << "\n"
+    << "Price: " << std::to_string(price) << "\n" 
+    << "Life quality score: " << std::to_string(lifeQuality_score) << "\n"
+    << "Economy score: " << std::to_string(economy_score) << "\n" 
+    << "Environment score: " << std::to_string(environment_score) << "\n" 
+    << "Construction status: " << Facility::toString(status) << "\n" 
+    << "Remaining construction time: " << std::to_string(timeLeft) << "\n";
+    return s.str();
 }
 
-const string Facility::toString(const FacilityCategory& category) const
+const string FacilityType::toString(const FacilityCategory& category) const
 {
     switch (category)
     {

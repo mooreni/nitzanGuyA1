@@ -6,7 +6,7 @@
 #include "Settlement.h"
 #include "Auxiliary.h"
 #include <fstream>
-//#include "Action.h"
+#include "Action.h"
 using std::string;
 using std::vector;
 
@@ -28,8 +28,10 @@ class Simulation {
         void close();
         void open();
         //Added Functions
+        vector<BaseAction*> getActionsLog();
         void readConfig(const string &configFilePath);
         SelectionPolicy* definePolicy(const string& policyShortcut); 
+        const int getPlanCounter();
         //Rule of Five
         ~Simulation();
         Simulation(const Simulation& other);

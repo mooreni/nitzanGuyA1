@@ -79,7 +79,15 @@ void Plan::step()
 
 void Plan::printStatus()
 {
-    std::cout << "The current status is: " << toString(status) << "\n";
+    std::cout << "Plan Id: " << plan_id << "\n"
+        << "Settlement name: " << settlement->getName() << "\n"
+        << "Plan status: " << Plan::toString(status) << "\n"
+        << "Selection policy: " << selectionPolicy->toString() << "\n"
+        << "LifeQualityScore: " << life_quality_score << "\n"
+        << "EconomyScore: " << economy_score << "\n"
+        << "EnvironmentScore: " << environment_score << "\n"
+        << Plan::toString(facilities) << "\n"
+        << Plan::toString(underConstruction);
 }
 
 const vector<Facility*>& Plan::getFacilities() const
@@ -113,7 +121,12 @@ const string Plan::toString() const
     return s.str();
 }
 
-const string Plan::toString(const PlanStatus& status) const
+SelectionPolicy *Plan::getPolicy()
+{
+    return selectionPolicy;
+}
+
+const string Plan::toString(const PlanStatus &status) const
 {
     switch (status)
     {
@@ -142,7 +155,7 @@ const string Plan::getSettlmentName() const
     return settlement->getName();
 }
 
-int Plan::getId() const
+const int Plan::getId() const
 {
     return plan_id;
 }
@@ -175,6 +188,7 @@ numFacilitiesAtTime((static_cast<int>(other.settlement->getType()))+1)
     }
 }
 
+//Copy assignment operator
 Plan &Plan::operator=(const Plan &other)
 {
     if(&other!=this){
@@ -204,13 +218,12 @@ Plan &Plan::operator=(const Plan &other)
 
 //Move Constructor
 Plan::Plan(Plan&& other):plan_id(other.plan_id), settlement(other.settlement), 
-selectionPolicy(other.selectionPolicy), status(other.status), facilities(other.facilities),
-underConstruction(other.underConstruction),facilityOptions(other.facilityOptions), 
+selectionPolicy(other.selectionPolicy), status(other.status), facilities(std::move(other.facilities)),
+underConstruction(std::move(other.underConstruction)),facilityOptions(other.facilityOptions), 
 life_quality_score(other.life_quality_score), economy_score(other.economy_score),environment_score(other.environment_score), 
 numFacilitiesAtTime((static_cast<int>(other.settlement->getType()))+1)
 {
     other.selectionPolicy=nullptr;
-    other.facilities.clear();
-    other.underConstruction.clear();
+    other.settlement=nullptr;
 
 }

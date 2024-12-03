@@ -24,10 +24,11 @@ class Plan {
         void addFacility(Facility* facility);
         const string toString() const;
         //Added functions
+        SelectionPolicy* getPolicy();
         const string toString(const PlanStatus& status) const;
         const string toString(const vector<Facility*>& facilities) const;
         const string getSettlmentName() const;
-        int getId() const;
+        const int getId() const;
         
         //Rule of Five
         ~Plan();

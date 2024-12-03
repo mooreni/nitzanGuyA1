@@ -17,17 +17,24 @@ SettlementType Settlement::getType() const
 const string Settlement::toString() const
 {
     string ret ("Settlement Name: " + getName() + ", Type: ");
-    SettlementType tempType = getType();
-    if(tempType==SettlementType::CITY)
-        ret.append("City");
-    else if(tempType==SettlementType::METROPOLIS)
-        ret.append("Metropolis");
-    else if(tempType==SettlementType::VILLAGE)
-        ret.append("Village");
+    SettlementType type = getType();
+    ret.append(toString(type));
     return ret;
 }
 
 Settlement *Settlement::clone() const
 {
     return new Settlement(name,this->getType());
+}
+
+const string Settlement::toString(const SettlementType& type) const
+{
+    string ret;
+    if(type==SettlementType::CITY)
+        ret.append("City");
+    else if(type==SettlementType::METROPOLIS)
+        ret.append("Metropolis");
+    else if(type==SettlementType::VILLAGE)
+        ret.append("Village");
+    return ret;
 }

@@ -19,6 +19,8 @@ class Settlement {
         SettlementType getType() const;
         const string toString() const;
         Settlement* clone() const;
+        //Added Functions
+        const string toString(const SettlementType& type) const;
 
         private:
             const string name;

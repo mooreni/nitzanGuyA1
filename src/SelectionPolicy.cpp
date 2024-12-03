@@ -17,7 +17,7 @@ const FacilityType &NaiveSelection::selectFacility(const vector<FacilityType> &f
 
 const string NaiveSelection::toString() const
 {
-    return ("Selection Logic: Naive, Last Selected Index: " + std::to_string(lastSelectedIndex));
+    return "Naive";
 }
 
 NaiveSelection *NaiveSelection::clone() const
@@ -70,7 +70,7 @@ int BalancedSelection::CalculateDistance(const FacilityType &f)
 
 const string BalancedSelection::toString() const
 {
-    return ("Selection Logic: Balanced");
+    return "Balanced";
 }
 
 BalancedSelection* BalancedSelection::clone() const
@@ -107,7 +107,7 @@ const FacilityType &EconomySelection::selectFacility(const vector<FacilityType> 
 
 const string EconomySelection::toString() const
 {
-    return ("Selection Logic: Economy, Last Selected Index: " + std::to_string(lastSelectedIndex));
+    return "Economy";
 }
 
 EconomySelection *EconomySelection::clone() const
@@ -137,7 +137,7 @@ const FacilityType &SustainabilitySelection::selectFacility(const vector<Facilit
 
 const string SustainabilitySelection::toString() const
 {
-    return ("Selection Logic: Environment, Last Selected Index: " + std::to_string(lastSelectedIndex));
+    return "Environment";
 }
 
 SustainabilitySelection *SustainabilitySelection::clone() const

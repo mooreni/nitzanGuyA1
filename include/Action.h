@@ -3,6 +3,8 @@
 #include <vector>
 #include "Simulation.h"
 using std::string;
+using namespace std;
+
 enum class SettlementType;
 enum class FacilityCategory;
 
@@ -24,6 +26,9 @@ class BaseAction{
         void error(string errorMsg);
         const string &getErrorMsg() const;
         void setStatus(ActionStatus newStatus);
+        //Added Functions
+        const string toString(ActionStatus status) const;
+
     private:
         string errorMsg;
         ActionStatus status;
