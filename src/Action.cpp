@@ -182,7 +182,7 @@ void PrintPlanStatus::act(Simulation &simulation)
     Plan& p(simulation.getPlan(planId));
     if(p.getId() == -1){
         setStatus(ActionStatus::ERROR);
-        cout << getErrorMsg() << endl;
+        cout << "Error:" + getErrorMsg() << endl;
     }
     else{
         p.printStatus();
@@ -296,7 +296,7 @@ void BackupSimulation::act(Simulation &simulation)
         backup = new Simulation(simulation);
     }
     else{
-        *backup = simulation; //How does backup get deleted?
+        *backup = simulation;
     }
     complete();
 

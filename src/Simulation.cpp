@@ -2,16 +2,12 @@
 #include <algorithm>
 using namespace std;
 /*Notes:
-Valgrind check, copy it into the terminal: valgrind --leak-check=full --show-reachable=yes bin/simulation config_file.txt
-To Do:
-    1.Start + Add Action: Finish how simulation understands the action inputs.
-        1.1. At the top of Simulation.h, I added "include action.h". For now i left it out cause we didnt fully write Action yet.
-    2.Rule of 5: Destructor-V, CopyConstruct-V, operator=-V, CopyConstruct2-V, operator=2-V, 
+Valgrind check, copy it into the terminal: 
+valgrind --leak-check=full --show-reachable=yes bin/simulation config_file.txt
 */
 
 Simulation::Simulation(const string &configFilePath) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
 isRunning(false), planCounter(0), actionsLog(), plans(), settlements(), facilitiesOptions()
-
 {
     readConfig(configFilePath);
 }
@@ -115,7 +111,6 @@ void Simulation::start()
         }
         action->act(*this);
         actionsLog.push_back(action);
-        //This will understand what action is called for now, and call to addAction
     } 
 }
 
@@ -265,7 +260,7 @@ Simulation &Simulation::operator=(const Simulation &other)
         for(unsigned int i=0;i<other.plans.size();i++){
             Settlement* sett = this->getSettlement(other.plans[i].getSettlmentName());
             Plan p (-1,*sett,nullptr,this->facilitiesOptions);
-            p=other.plans[i];
+            p.partialMovePlan(other.plans[i]);
             plans.push_back(p);
         }
         //Copying FacilityOptions

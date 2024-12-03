@@ -17,7 +17,7 @@ const FacilityType &NaiveSelection::selectFacility(const vector<FacilityType> &f
 
 const string NaiveSelection::toString() const
 {
-    return "Naive";
+    return "nav";
 }
 
 NaiveSelection *NaiveSelection::clone() const
@@ -70,7 +70,7 @@ int BalancedSelection::CalculateDistance(const FacilityType &f)
 
 const string BalancedSelection::toString() const
 {
-    return "Balanced";
+    return "bal";
 }
 
 BalancedSelection* BalancedSelection::clone() const
@@ -107,7 +107,7 @@ const FacilityType &EconomySelection::selectFacility(const vector<FacilityType> 
 
 const string EconomySelection::toString() const
 {
-    return "Economy";
+    return "eco";
 }
 
 EconomySelection *EconomySelection::clone() const
@@ -137,7 +137,7 @@ const FacilityType &SustainabilitySelection::selectFacility(const vector<Facilit
 
 const string SustainabilitySelection::toString() const
 {
-    return "Environment";
+    return "env";
 }
 
 SustainabilitySelection *SustainabilitySelection::clone() const
