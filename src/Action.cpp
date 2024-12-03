@@ -179,7 +179,7 @@ BaseAction(), planId(planId)
 
 void PrintPlanStatus::act(Simulation &simulation)
 {
-    Plan p(simulation.getPlan(planId));
+    Plan& p(simulation.getPlan(planId));
     if(p.getId() == -1){
         setStatus(ActionStatus::ERROR);
         cout << getErrorMsg() << endl;
@@ -246,6 +246,7 @@ void PrintActionsLog::act(Simulation &simulation)
     for(unsigned int i=0; i<vec.size(); i++){
         cout << vec[i]->toString();
     }
+    cout<< "\n";
     complete();
 }
 
@@ -291,7 +292,12 @@ BackupSimulation::BackupSimulation(): BaseAction()
 
 void BackupSimulation::act(Simulation &simulation)
 {
-    *backup = simulation; //How does backup get deleted?
+    if(backup==nullptr){
+        backup = new Simulation(simulation);
+    }
+    else{
+        *backup = simulation; //How does backup get deleted?
+    }
     complete();
 
 }

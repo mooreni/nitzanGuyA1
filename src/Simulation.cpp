@@ -191,14 +191,14 @@ Plan& Simulation::getPlan(const int planID)
 
 void Simulation::step() 
 {   //forwards all the plans a single step
-    for(Plan p : plans){
+    for(Plan& p : plans){
         p.step();
     }
 }
 
 void Simulation::close()
 {   //prints all the plan statuses and changes the running flag
-    for(Plan p : plans){
+    for(Plan& p : plans){
         cout << p.toString() << endl;
     }
     isRunning=false;
