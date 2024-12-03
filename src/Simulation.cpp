@@ -1,7 +1,8 @@
 #include "Simulation.h"
 #include <algorithm>
 using namespace std;
-/*Notes:
+/*
+Notes:
 Valgrind check, copy it into the terminal: 
 valgrind --leak-check=full --show-reachable=yes bin/simulation config_file.txt
 */
