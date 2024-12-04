@@ -79,15 +79,7 @@ void Plan::step()
 
 void Plan::printStatus()
 {
-    std::cout << "PlanID: " << plan_id << "\n"
-    << "Settlement name: " << settlement->getName() << "\n"
-    << "Plan status: " << Plan::toString(status) << "\n"
-    << "Selection policy: " << selectionPolicy->toString() << "\n"
-    << "LifeQualityScore: " << life_quality_score << "\n"
-    << "EconomyScore: " << economy_score << "\n"
-    << "EnvironmentScore: " << environment_score
-    << Plan::toString(facilities)<< "\n"
-    << Plan::toString(underConstruction) << "\n";
+    std::cout << this->toString();
 }
 
 const vector<Facility*>& Plan::getFacilities() const
@@ -115,7 +107,7 @@ const string Plan::toString() const
         << "LifeQualityScore: " << life_quality_score << "\n"
         << "EconomyScore: " << economy_score << "\n"
         << "EnvironmentScore: " << environment_score << "\n"
-        << Plan::toString(facilities) << "\n"
+        << Plan::toString(facilities)
         << Plan::toString(underConstruction) << "\n";
 
     return s.str();
@@ -141,9 +133,6 @@ const string Plan::toString(const vector<Facility*>& facilities) const
  std::ostringstream s;
 
     for(unsigned int i = 0; i < facilities.size(); i++){
-        /*if (i > 0) {
-            s << "\n";
-        }*/
         s << "FacilityName: " << facilities[i]->getName() << "\n"
         << "FacilityStatus: " << facilities[i]->toString(facilities[i]->getStatus()) << "\n";
     }
@@ -158,6 +147,11 @@ const string Plan::getSettlmentName() const
 const int Plan::getId() const
 {
     return plan_id;
+}
+
+const PlanStatus Plan::getStatus() const
+{
+    return status;
 }
 
 //Rule of Five

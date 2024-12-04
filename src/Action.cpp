@@ -296,7 +296,7 @@ void BackupSimulation::act(Simulation &simulation)
         backup = new Simulation(simulation);
     }
     else{
-        *backup = simulation; //How does backup get deleted?
+        *backup = simulation; 
     }
     complete();
 

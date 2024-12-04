@@ -29,6 +29,7 @@ class Plan {
         const string toString(const vector<Facility*>& facilities) const;
         const string getSettlmentName() const;
         const int getId() const;
+        const PlanStatus getStatus() const;
         
         //Rule of Five
         ~Plan();
