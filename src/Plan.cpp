@@ -79,6 +79,9 @@ void Plan::step()
 
 void Plan::printStatus()
 {
+<<<<<<< HEAD
+    std::cout << this->toString();
+=======
     std::cout << "PlanID: " << plan_id << "\n"
     << "SettlementName: " << settlement->getName() << "\n"
     << "PlanStatus: " << Plan::toString(status) << "\n"
@@ -88,6 +91,7 @@ void Plan::printStatus()
     << "EnvironmentScore: " << environment_score
     << Plan::toString(facilities)<< "\n"
     << Plan::toString(underConstruction) << "\n";
+>>>>>>> e2c63010713e5d870acb4ead7b80657a79f11cf0
 }
 
 const vector<Facility*>& Plan::getFacilities() const
@@ -140,12 +144,18 @@ const string Plan::toString(const vector<Facility*>& listToPrint) const
 {
  std::ostringstream s;
 
+<<<<<<< HEAD
+    for(unsigned int i = 0; i < facilities.size(); i++){
+        s << "FacilityName: " << facilities[i]->getName() << "\n"
+        << "FacilityStatus: " << facilities[i]->toString(facilities[i]->getStatus()) << "\n";
+=======
     for(unsigned int i = 0; i < listToPrint.size(); i++){
         /*if (i > 0) {
             s << "\n";
         }*/
         s << "FacilityName: " << listToPrint[i]->getName() << "\n"
         << "FacilityStatus: " << listToPrint[i]->toString(listToPrint[i]->getStatus()) << "\n";
+>>>>>>> 325e69695c7320bb860c7d7c0fc4a718b90b00ef
     }
     return s.str();
 }
@@ -160,6 +170,11 @@ const int Plan::getId() const
     return plan_id;
 }
 
+<<<<<<< HEAD
+const PlanStatus Plan::getStatus() const
+{
+    return status;
+=======
 void Plan::partialMovePlan(const Plan &other)
 {
     if(&other!=this){
@@ -184,6 +199,7 @@ void Plan::partialMovePlan(const Plan &other)
         economy_score=other.economy_score;
         environment_score=other.environment_score;
     }
+>>>>>>> e2c63010713e5d870acb4ead7b80657a79f11cf0
 }
 
 //Rule of Five

@@ -39,6 +39,7 @@ class Plan {
         ~Plan();
         Plan (const Plan& other);
         Plan& operator=(const Plan& other) = delete;
+        Plan& operator=(const Plan& other) = delete;
         Plan (Plan&& other);
         Plan& operator=(Plan&& other) = delete;
 

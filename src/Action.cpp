@@ -294,9 +294,18 @@ BackupSimulation::BackupSimulation(): BaseAction()
 
 void BackupSimulation::act(Simulation &simulation)
 {
+<<<<<<< HEAD
+    if(backup==nullptr){
+        backup = new Simulation(simulation);
+    }
+    else{
+        *backup = simulation; 
+    }
+=======
     delete backup;
     backup=nullptr;
     backup = new Simulation(simulation);
+>>>>>>> e2c63010713e5d870acb4ead7b80657a79f11cf0
     complete();
 
 }
