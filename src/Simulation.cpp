@@ -37,8 +37,12 @@ void Simulation::readConfig(const string &configFilePath)
             addFacility(f);
         }
         else if(parsedArgs[0]=="plan"){
+            int currPC = getPlanCounter();
             SelectionPolicy* policy = definePolicy(parsedArgs[2]);
             addPlan(getSettlement(parsedArgs[1]), policy);
+            if(currPC==getPlanCounter()){
+                delete policy;
+            }
         }
     }
 }
@@ -77,41 +81,54 @@ void Simulation::start()
         getline(std::cin, userInput);
         vector<string> parsedArgs = Auxiliary::parseArguments(userInput);
         BaseAction* action;
+        bool flag (false);
         if(parsedArgs[0]=="step"){
             action = new SimulateStep(stoi(parsedArgs[1]));
+            flag=true;
         }
         else if(parsedArgs[0]=="plan"){
             action = new AddPlan(parsedArgs[1], parsedArgs[2]);
+            flag=true;
         }
         else if(parsedArgs[0]=="settlement"){
             action = new AddSettlement(parsedArgs[1], static_cast<SettlementType>(stoi(parsedArgs[2])));
+            flag=true;
         }
         else if(parsedArgs[0]=="facility"){
             action = new AddFacility(parsedArgs[1], static_cast<FacilityCategory>(stoi(parsedArgs[2])),stoi(parsedArgs[3]),stoi(parsedArgs[4]),stoi(parsedArgs[5]),stoi(parsedArgs[6]) );
+            flag=true;
         }
         else if(parsedArgs[0]=="planStatus"){
             action = new PrintPlanStatus(stoi(parsedArgs[1]));
+            flag=true;
         }
         else if(parsedArgs[0]=="changePolicy"){
             action = new ChangePlanPolicy(stoi(parsedArgs[1]), parsedArgs[2]);
+            flag=true;
         }
         else if(parsedArgs[0]=="log"){
             action = new PrintActionsLog();
+            flag=true;
         }
         else if(parsedArgs[0]=="close"){
             action = new Close();
+            flag=true;
         }
         else if(parsedArgs[0]=="backup"){
             action = new BackupSimulation();
+            flag=true;
         }
         else if(parsedArgs[0]=="restore"){
             action = new RestoreSimulation();
+            flag=true;
         }
         else{
             cout<< "Action doesnt exist" ;
         }
-        action->act(*this);
-        actionsLog.push_back(action);
+        if(flag){
+            action->act(*this);
+            actionsLog.push_back(action);
+        }
     } 
 }
 
@@ -222,13 +239,19 @@ Simulation::~Simulation()
 //Copy Constructor
 Simulation::Simulation(const Simulation &other) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
 isRunning(other.isRunning), planCounter(other.planCounter), 
-actionsLog(), plans(other.plans), settlements(), facilitiesOptions(other.facilitiesOptions)
+actionsLog(), plans(), settlements(), facilitiesOptions(other.facilitiesOptions)
 {
     for(unsigned int i=0;i<other.actionsLog.size();i++){
         actionsLog.push_back(other.actionsLog[i]->clone());
     }
     for(unsigned int i=0;i<other.settlements.size();i++){
         settlements.push_back(other.settlements[i]->clone());
+    }
+    for(unsigned int i=0;i<other.plans.size();i++){
+        Settlement* sett = this->getSettlement(other.plans[i].getSettlmentName());
+        Plan p (-1,*sett,nullptr,this->facilitiesOptions);
+        p.partialMovePlan(other.plans[i]);
+        plans.push_back(p);
     }
 }
 

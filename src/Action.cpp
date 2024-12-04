@@ -75,10 +75,12 @@ BaseAction(), settlementName(settlementName), selectionPolicy(selectionPolicy)
 void AddPlan::act(Simulation & simulation)
 {
     int currPC = simulation.getPlanCounter();
-    simulation.addPlan(simulation.getSettlement(settlementName), simulation.definePolicy(selectionPolicy));
+    SelectionPolicy* policy = simulation.definePolicy(selectionPolicy);
+    simulation.addPlan(simulation.getSettlement(settlementName), policy);
     if(currPC == simulation.getPlanCounter()){ //Checks if a new plan was created
         setStatus(ActionStatus::ERROR);
         cout << getErrorMsg() << endl;
+        delete policy;
     }
     else{
         complete();
@@ -292,12 +294,9 @@ BackupSimulation::BackupSimulation(): BaseAction()
 
 void BackupSimulation::act(Simulation &simulation)
 {
-    if(backup==nullptr){
-        backup = new Simulation(simulation);
-    }
-    else{
-        *backup = simulation;
-    }
+    delete backup;
+    backup=nullptr;
+    backup = new Simulation(simulation);
     complete();
 
 }
