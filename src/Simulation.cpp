@@ -212,7 +212,13 @@ void Simulation::step()
 void Simulation::close()
 {   //prints all the plan statuses and changes the running flag
     for(Plan& p : plans){
-        cout << p.toString() << endl;
+        cout <<  "Plan Id: " << p.getId() << "\n"
+        << "Settlement name: " << p.getSettlmentName() << "\n"
+        << "Plan status: " << p.toString(p.getStatus()) << "\n"
+        << "Selection policy: " << p.getPolicy()->toString() << "\n"
+        << "LifeQualityScore: " << p.getlifeQualityScore() << "\n"
+        << "EconomyScore: " << p.getEconomyScore() << "\n"
+        << "EnvironmentScore: " << p.getEnvironmentScore() << "\n";
     }
     isRunning=false;
 }

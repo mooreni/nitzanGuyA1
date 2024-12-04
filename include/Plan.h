@@ -29,7 +29,11 @@ class Plan {
         const string toString(const vector<Facility*>& facilities) const;
         const string getSettlmentName() const;
         const int getId() const;
+<<<<<<< HEAD
         void partialMovePlan(const Plan& other);
+=======
+        const PlanStatus getStatus() const;
+>>>>>>> Close and newLines fix
         
         //Rule of Five
         ~Plan();
