@@ -140,13 +140,22 @@ const string Plan::toString(const PlanStatus &status) const
     return "";
 }
 
-const string Plan::toString(const vector<Facility*>& facilities) const
+const string Plan::toString(const vector<Facility*>& listToPrint) const
 {
  std::ostringstream s;
 
+<<<<<<< HEAD
     for(unsigned int i = 0; i < facilities.size(); i++){
         s << "FacilityName: " << facilities[i]->getName() << "\n"
         << "FacilityStatus: " << facilities[i]->toString(facilities[i]->getStatus()) << "\n";
+=======
+    for(unsigned int i = 0; i < listToPrint.size(); i++){
+        /*if (i > 0) {
+            s << "\n";
+        }*/
+        s << "FacilityName: " << listToPrint[i]->getName() << "\n"
+        << "FacilityStatus: " << listToPrint[i]->toString(listToPrint[i]->getStatus()) << "\n";
+>>>>>>> 325e69695c7320bb860c7d7c0fc4a718b90b00ef
     }
     return s.str();
 }
