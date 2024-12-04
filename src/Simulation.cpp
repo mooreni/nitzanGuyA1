@@ -239,7 +239,7 @@ Simulation::~Simulation()
 //Copy Constructor
 Simulation::Simulation(const Simulation &other) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
 isRunning(other.isRunning), planCounter(other.planCounter), 
-actionsLog(), plans(), settlements(), facilitiesOptions(other.facilitiesOptions)
+actionsLog(), plans(), settlements(), facilitiesOptions()
 {
     for(unsigned int i=0;i<other.actionsLog.size();i++){
         actionsLog.push_back(other.actionsLog[i]->clone());
@@ -247,12 +247,17 @@ actionsLog(), plans(), settlements(), facilitiesOptions(other.facilitiesOptions)
     for(unsigned int i=0;i<other.settlements.size();i++){
         settlements.push_back(other.settlements[i]->clone());
     }
+    for(unsigned int i=0;i<other.facilitiesOptions.size();i++){
+        FacilityType temp (other.facilitiesOptions[i]);
+        facilitiesOptions.push_back(temp);
+    }
     for(unsigned int i=0;i<other.plans.size();i++){
         Settlement* sett = this->getSettlement(other.plans[i].getSettlmentName());
         Plan p (-1,*sett,nullptr,this->facilitiesOptions);
         p.partialMovePlan(other.plans[i]);
         plans.push_back(p);
     }
+
 }
 
 //Copy Assignment Operator
@@ -279,6 +284,12 @@ Simulation &Simulation::operator=(const Simulation &other)
         for(unsigned int i=0;i<other.settlements.size();i++){
             settlements.push_back((other.settlements[i])->clone());
         }
+        //Copying FacilityOptions
+        facilitiesOptions.clear();
+        for(unsigned int i=0;i<other.facilitiesOptions.size();i++){
+            FacilityType temp (other.facilitiesOptions[i]);
+            facilitiesOptions.push_back(temp);
+        }
         //Copying plans
         plans.clear();
         for(unsigned int i=0;i<other.plans.size();i++){
@@ -286,11 +297,6 @@ Simulation &Simulation::operator=(const Simulation &other)
             Plan p (-1,*sett,nullptr,this->facilitiesOptions);
             p.partialMovePlan(other.plans[i]);
             plans.push_back(p);
-        }
-        //Copying FacilityOptions
-        facilitiesOptions.clear();
-        for(unsigned int i=0;i<other.facilitiesOptions.size();i++){
-            facilitiesOptions.push_back(facilitiesOptions[i]);
         }
     }
     return *this;
