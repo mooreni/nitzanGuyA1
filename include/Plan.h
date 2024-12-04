@@ -29,12 +29,16 @@ class Plan {
         const string toString(const vector<Facility*>& facilities) const;
         const string getSettlmentName() const;
         const int getId() const;
+<<<<<<< HEAD
         const PlanStatus getStatus() const;
+=======
+        void partialMovePlan(const Plan& other);
+>>>>>>> e2c63010713e5d870acb4ead7b80657a79f11cf0
         
         //Rule of Five
         ~Plan();
         Plan (const Plan& other);
-        Plan& operator=(const Plan& other); 
+        Plan& operator=(const Plan& other) = delete;
         Plan (Plan&& other);
         Plan& operator=(Plan&& other) = delete;
 

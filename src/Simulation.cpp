@@ -1,17 +1,14 @@
 #include "Simulation.h"
 #include <algorithm>
 using namespace std;
-/*Notes:
-Valgrind check, copy it into the terminal: valgrind --leak-check=full --show-reachable=yes bin/simulation config_file.txt
-To Do:
-    1.Start + Add Action: Finish how simulation understands the action inputs.
-        1.1. At the top of Simulation.h, I added "include action.h". For now i left it out cause we didnt fully write Action yet.
-    2.Rule of 5: Destructor-V, CopyConstruct-V, operator=-V, CopyConstruct2-V, operator=2-V, 
+/*
+Notes:
+Valgrind check, copy it into the terminal: 
+valgrind --leak-check=full --show-reachable=yes bin/simulation config_file.txt
 */
 
 Simulation::Simulation(const string &configFilePath) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
 isRunning(false), planCounter(0), actionsLog(), plans(), settlements(), facilitiesOptions()
-
 {
     readConfig(configFilePath);
 }
@@ -40,8 +37,12 @@ void Simulation::readConfig(const string &configFilePath)
             addFacility(f);
         }
         else if(parsedArgs[0]=="plan"){
+            int currPC = getPlanCounter();
             SelectionPolicy* policy = definePolicy(parsedArgs[2]);
             addPlan(getSettlement(parsedArgs[1]), policy);
+            if(currPC==getPlanCounter()){
+                delete policy;
+            }
         }
     }
 }
@@ -80,42 +81,54 @@ void Simulation::start()
         getline(std::cin, userInput);
         vector<string> parsedArgs = Auxiliary::parseArguments(userInput);
         BaseAction* action;
+        bool flag (false);
         if(parsedArgs[0]=="step"){
             action = new SimulateStep(stoi(parsedArgs[1]));
+            flag=true;
         }
         else if(parsedArgs[0]=="plan"){
             action = new AddPlan(parsedArgs[1], parsedArgs[2]);
+            flag=true;
         }
         else if(parsedArgs[0]=="settlement"){
             action = new AddSettlement(parsedArgs[1], static_cast<SettlementType>(stoi(parsedArgs[2])));
+            flag=true;
         }
         else if(parsedArgs[0]=="facility"){
             action = new AddFacility(parsedArgs[1], static_cast<FacilityCategory>(stoi(parsedArgs[2])),stoi(parsedArgs[3]),stoi(parsedArgs[4]),stoi(parsedArgs[5]),stoi(parsedArgs[6]) );
+            flag=true;
         }
         else if(parsedArgs[0]=="planStatus"){
             action = new PrintPlanStatus(stoi(parsedArgs[1]));
+            flag=true;
         }
         else if(parsedArgs[0]=="changePolicy"){
             action = new ChangePlanPolicy(stoi(parsedArgs[1]), parsedArgs[2]);
+            flag=true;
         }
         else if(parsedArgs[0]=="log"){
             action = new PrintActionsLog();
+            flag=true;
         }
         else if(parsedArgs[0]=="close"){
             action = new Close();
+            flag=true;
         }
         else if(parsedArgs[0]=="backup"){
             action = new BackupSimulation();
+            flag=true;
         }
         else if(parsedArgs[0]=="restore"){
             action = new RestoreSimulation();
+            flag=true;
         }
         else{
             cout<< "Action doesnt exist" ;
         }
-        action->act(*this);
-        actionsLog.push_back(action);
-        //This will understand what action is called for now, and call to addAction
+        if(flag){
+            action->act(*this);
+            actionsLog.push_back(action);
+        }
     } 
 }
 
@@ -232,13 +245,19 @@ Simulation::~Simulation()
 //Copy Constructor
 Simulation::Simulation(const Simulation &other) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
 isRunning(other.isRunning), planCounter(other.planCounter), 
-actionsLog(), plans(other.plans), settlements(), facilitiesOptions(other.facilitiesOptions)
+actionsLog(), plans(), settlements(), facilitiesOptions(other.facilitiesOptions)
 {
     for(unsigned int i=0;i<other.actionsLog.size();i++){
         actionsLog.push_back(other.actionsLog[i]->clone());
     }
     for(unsigned int i=0;i<other.settlements.size();i++){
         settlements.push_back(other.settlements[i]->clone());
+    }
+    for(unsigned int i=0;i<other.plans.size();i++){
+        Settlement* sett = this->getSettlement(other.plans[i].getSettlmentName());
+        Plan p (-1,*sett,nullptr,this->facilitiesOptions);
+        p.partialMovePlan(other.plans[i]);
+        plans.push_back(p);
     }
 }
 
@@ -271,7 +290,7 @@ Simulation &Simulation::operator=(const Simulation &other)
         for(unsigned int i=0;i<other.plans.size();i++){
             Settlement* sett = this->getSettlement(other.plans[i].getSettlmentName());
             Plan p (-1,*sett,nullptr,this->facilitiesOptions);
-            p=other.plans[i];
+            p.partialMovePlan(other.plans[i]);
             plans.push_back(p);
         }
         //Copying FacilityOptions

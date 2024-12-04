@@ -79,7 +79,19 @@ void Plan::step()
 
 void Plan::printStatus()
 {
+<<<<<<< HEAD
     std::cout << this->toString();
+=======
+    std::cout << "PlanID: " << plan_id << "\n"
+    << "SettlementName: " << settlement->getName() << "\n"
+    << "PlanStatus: " << Plan::toString(status) << "\n"
+    << "SelectionPolicy: " << selectionPolicy->toString() << "\n"
+    << "LifeQualityScore: " << life_quality_score << "\n"
+    << "EconomyScore: " << economy_score << "\n"
+    << "EnvironmentScore: " << environment_score
+    << Plan::toString(facilities)<< "\n"
+    << Plan::toString(underConstruction) << "\n";
+>>>>>>> e2c63010713e5d870acb4ead7b80657a79f11cf0
 }
 
 const vector<Facility*>& Plan::getFacilities() const
@@ -122,8 +134,8 @@ const string Plan::toString(const PlanStatus &status) const
 {
     switch (status)
     {
-        case PlanStatus::AVALIABLE: return "Available";
-        case PlanStatus::BUSY: return "Busy"; 
+        case PlanStatus::AVALIABLE: return "AVAILABLE";
+        case PlanStatus::BUSY: return "BUSY"; 
     }
     return "";
 }
@@ -149,9 +161,36 @@ const int Plan::getId() const
     return plan_id;
 }
 
+<<<<<<< HEAD
 const PlanStatus Plan::getStatus() const
 {
     return status;
+=======
+void Plan::partialMovePlan(const Plan &other)
+{
+    if(&other!=this){
+        plan_id = other.plan_id;
+        selectionPolicy = other.selectionPolicy->clone();
+        status = other.status;
+        for(unsigned int i=0;i<facilities.size();i++){
+            delete facilities[i];
+        }
+        facilities.clear();
+        for(unsigned int i=0;i<other.facilities.size();i++){
+            facilities.push_back(new Facility(*other.facilities[i]));
+        }
+        for(unsigned int i=0;i<underConstruction.size();i++){
+            delete underConstruction[i];
+        }
+        underConstruction.clear();
+        for(unsigned int i=0;i<other.underConstruction.size();i++){
+            underConstruction.push_back(new Facility(*other.underConstruction[i]));
+        }
+        life_quality_score=other.life_quality_score;
+        economy_score=other.economy_score;
+        environment_score=other.environment_score;
+    }
+>>>>>>> e2c63010713e5d870acb4ead7b80657a79f11cf0
 }
 
 //Rule of Five
@@ -180,34 +219,6 @@ numFacilitiesAtTime((static_cast<int>(other.settlement->getType()))+1)
     for(unsigned int i=0;i<other.underConstruction.size();i++){
         underConstruction.push_back(new Facility(*other.underConstruction[i]));
     }
-}
-
-//Copy assignment operator
-Plan &Plan::operator=(const Plan &other)
-{
-    if(&other!=this){
-        plan_id = other.plan_id;
-        selectionPolicy = other.selectionPolicy->clone();
-        status = other.status;
-        for(unsigned int i=0;i<facilities.size();i++){
-            delete facilities[i];
-        }
-        facilities.clear();
-        for(unsigned int i=0;i<other.facilities.size();i++){
-            facilities.push_back(new Facility(*other.facilities[i]));
-        }
-        for(unsigned int i=0;i<underConstruction.size();i++){
-            delete underConstruction[i];
-        }
-        underConstruction.clear();
-        for(unsigned int i=0;i<other.underConstruction.size();i++){
-            underConstruction.push_back(new Facility(*other.underConstruction[i]));
-        }
-        life_quality_score=other.life_quality_score;
-        economy_score=other.economy_score;
-        environment_score=other.environment_score;
-    }
-    return *this;
 }
 
 //Move Constructor
