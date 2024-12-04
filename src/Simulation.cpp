@@ -81,49 +81,40 @@ void Simulation::start()
         getline(std::cin, userInput);
         vector<string> parsedArgs = Auxiliary::parseArguments(userInput);
         BaseAction* action;
-        bool flag (false);
+        bool flag (true);
         if(parsedArgs[0]=="step"){
             action = new SimulateStep(stoi(parsedArgs[1]));
-            flag=true;
         }
         else if(parsedArgs[0]=="plan"){
             action = new AddPlan(parsedArgs[1], parsedArgs[2]);
-            flag=true;
         }
         else if(parsedArgs[0]=="settlement"){
             action = new AddSettlement(parsedArgs[1], static_cast<SettlementType>(stoi(parsedArgs[2])));
-            flag=true;
         }
         else if(parsedArgs[0]=="facility"){
             action = new AddFacility(parsedArgs[1], static_cast<FacilityCategory>(stoi(parsedArgs[2])),stoi(parsedArgs[3]),stoi(parsedArgs[4]),stoi(parsedArgs[5]),stoi(parsedArgs[6]) );
-            flag=true;
         }
         else if(parsedArgs[0]=="planStatus"){
             action = new PrintPlanStatus(stoi(parsedArgs[1]));
-            flag=true;
         }
         else if(parsedArgs[0]=="changePolicy"){
             action = new ChangePlanPolicy(stoi(parsedArgs[1]), parsedArgs[2]);
-            flag=true;
         }
         else if(parsedArgs[0]=="log"){
             action = new PrintActionsLog();
-            flag=true;
         }
         else if(parsedArgs[0]=="close"){
             action = new Close();
-            flag=true;
         }
         else if(parsedArgs[0]=="backup"){
             action = new BackupSimulation();
-            flag=true;
         }
         else if(parsedArgs[0]=="restore"){
             action = new RestoreSimulation();
-            flag=true;
         }
         else{
             cout<< "Action doesnt exist" ;
+            flag=false;
         }
         if(flag){
             action->act(*this);
