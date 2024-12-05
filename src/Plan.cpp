@@ -2,7 +2,7 @@
 #include <sstream>
 
 Plan::Plan(const int planId, const Settlement& settlement, SelectionPolicy* selectionPolicy, const vector<FacilityType>& facilityOptions):
-plan_id(planId), settlement(&settlement), selectionPolicy(selectionPolicy), status(PlanStatus::AVALIABLE), facilities(), underConstruction(),
+plan_id(planId), settlement(settlement), selectionPolicy(selectionPolicy), status(PlanStatus::AVALIABLE), facilities(), underConstruction(),
 facilityOptions(facilityOptions), life_quality_score(0),economy_score(0),environment_score(0), 
 numFacilitiesAtTime((static_cast<int>(settlement.getType()))+1)
 {
@@ -48,7 +48,7 @@ void Plan::step()
     if(status==PlanStatus::AVALIABLE){
         while (underConstruction.size()<numFacilitiesAtTime)
         {
-            Facility* f = new Facility(selectionPolicy->selectFacility(facilityOptions),settlement->getName());
+            Facility* f = new Facility(selectionPolicy->selectFacility(facilityOptions),settlement.getName());
             addFacility(f);
         }
     }
@@ -80,7 +80,7 @@ void Plan::step()
 void Plan::printStatus()
 {
     std::cout << "PlanID: " << plan_id << "\n"
-    << "SettlementName: " << settlement->getName() << "\n"
+    << "SettlementName: " << settlement.getName() << "\n"
     << "PlanStatus: " << Plan::toString(status) << "\n"
     << "SelectionPolicy: " << selectionPolicy->toString() << "\n"
     << "LifeQualityScore: " << life_quality_score << "\n"
@@ -109,7 +109,7 @@ const string Plan::toString() const
 {
     std::ostringstream s;
         s << "Plan Id: " << plan_id << "\n"
-        << "Settlement name: " << settlement->getName() << "\n"
+        << "Settlement name: " << settlement.getName() << "\n"
         << "Plan status: " << Plan::toString(status) << "\n"
         << "Selection policy: " << selectionPolicy->toString() << "\n"
         << "LifeQualityScore: " << life_quality_score << "\n"
@@ -157,7 +157,7 @@ const string Plan::toString(const vector<Facility*>& listToPrint) const
 
 const string Plan::getSettlmentName() const
 {
-    return settlement->getName();
+    return settlement.getName();
 }
 
 const int Plan::getId() const
@@ -209,7 +209,7 @@ Plan::Plan(const Plan &other) : plan_id(other.plan_id), settlement(other.settlem
 selectionPolicy(other.selectionPolicy->clone()), status(other.status), facilities(), underConstruction(),
 facilityOptions(other.facilityOptions), life_quality_score(other.life_quality_score),
 economy_score(other.economy_score),environment_score(other.environment_score), 
-numFacilitiesAtTime((static_cast<int>(other.settlement->getType()))+1)
+numFacilitiesAtTime((static_cast<int>(other.settlement.getType()))+1)
 {
     for(unsigned int i=0;i<other.facilities.size();i++){
         facilities.push_back(new Facility(*other.facilities[i]));
@@ -224,9 +224,7 @@ Plan::Plan(Plan&& other):plan_id(other.plan_id), settlement(other.settlement),
 selectionPolicy(other.selectionPolicy), status(other.status), facilities(std::move(other.facilities)),
 underConstruction(std::move(other.underConstruction)),facilityOptions(other.facilityOptions), 
 life_quality_score(other.life_quality_score), economy_score(other.economy_score),environment_score(other.environment_score), 
-numFacilitiesAtTime((static_cast<int>(other.settlement->getType()))+1)
+numFacilitiesAtTime((static_cast<int>(other.settlement.getType()))+1)
 {
     other.selectionPolicy=nullptr;
-    other.settlement=nullptr;
-
 }
