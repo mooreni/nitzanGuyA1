@@ -18,8 +18,8 @@ class Settlement {
         const string &getName() const;
         SettlementType getType() const;
         const string toString() const;
-        Settlement* clone() const;
         //Added Functions
+        Settlement* clone() const;
         const string toString(const SettlementType& type) const;
 
         private:

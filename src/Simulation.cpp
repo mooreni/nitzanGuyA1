@@ -8,6 +8,7 @@ valgrind --leak-check=full --show-reachable=yes bin/simulation config_file.txt
 */
 
 Simulation::Simulation(const string &configFilePath) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
+nullSettlement("errorSettlement", SettlementType::VILLAGE),
 isRunning(false), planCounter(0), actionsLog(), plans(), settlements(), facilitiesOptions()
 {
     readConfig(configFilePath);
@@ -123,17 +124,18 @@ void Simulation::start()
     } 
 }
 
-void Simulation::addPlan(const Settlement *settlement, SelectionPolicy *selectionPolicy)
+void Simulation::addPlan(const Settlement &settlement, SelectionPolicy *selectionPolicy)
 {
-    if(settlement != nullptr){
-        bool validPlan = (isSettlementExists(settlement->getName())&&(selectionPolicy)!=nullptr);
+    if(true){
+        bool validPlan = (isSettlementExists(settlement.getName())&&(selectionPolicy)!=nullptr);
         if(validPlan){
-            Plan p(planCounter,*settlement,selectionPolicy,facilitiesOptions);
+            Plan p(planCounter,settlement,selectionPolicy,facilitiesOptions);
             plans.push_back(p);
             planCounter++;
         }
     }
 }
+
 
 void Simulation::addAction(BaseAction *action)
 {
@@ -171,14 +173,14 @@ bool Simulation::isSettlementExists(const string &settlementName)
     return exists;
 }
 
-Settlement* Simulation::getSettlement(const string &settlementName)
+Settlement & Simulation::getSettlement(const string &settlementName)
 {
     for (Settlement* settlement : settlements) {
         if (settlement->getName() == settlementName) {
-            return settlement;  // Return the pointer to the matching settlement
+            return *settlement;  // Return the place of the matching settlement
         }
     }
-    return nullptr;  // Return nullptr if no match is found
+    return nullSettlement;  // Return nullptr if no match is found
 }
 
 Plan& Simulation::getPlan(const int planID)
@@ -235,6 +237,7 @@ Simulation::~Simulation()
 
 //Copy Constructor
 Simulation::Simulation(const Simulation &other) : nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()), 
+nullSettlement("errorSettlement", SettlementType::VILLAGE),
 isRunning(other.isRunning), planCounter(other.planCounter), 
 actionsLog(), plans(), settlements(), facilitiesOptions()
 {
@@ -249,8 +252,8 @@ actionsLog(), plans(), settlements(), facilitiesOptions()
         facilitiesOptions.push_back(temp);
     }
     for(unsigned int i=0;i<other.plans.size();i++){
-        Settlement* sett = this->getSettlement(other.plans[i].getSettlmentName());
-        Plan p (-1,*sett,nullptr,this->facilitiesOptions);
+        //Settlement sett (this->getSettlement(other.plans[i].getSettlmentName()));
+        Plan p (-1,this->getSettlement(other.plans[i].getSettlmentName()),nullptr,this->facilitiesOptions);
         p.partialMovePlan(other.plans[i]);
         plans.push_back(p);
     }
@@ -290,8 +293,8 @@ Simulation &Simulation::operator=(const Simulation &other)
         //Copying plans
         plans.clear();
         for(unsigned int i=0;i<other.plans.size();i++){
-            Settlement* sett = this->getSettlement(other.plans[i].getSettlmentName());
-            Plan p (-1,*sett,nullptr,this->facilitiesOptions);
+            //Settlement sett (this->getSettlement(other.plans[i].getSettlmentName()));
+            Plan p (-1,this->getSettlement(other.plans[i].getSettlmentName()),nullptr,this->facilitiesOptions);
             p.partialMovePlan(other.plans[i]);
             plans.push_back(p);
         }
@@ -301,6 +304,7 @@ Simulation &Simulation::operator=(const Simulation &other)
 
 //Move Constructor
 Simulation::Simulation(Simulation &&other): nullPlan(-1,Settlement("Null", SettlementType::VILLAGE),new NaiveSelection(),vector<FacilityType>()),
+nullSettlement("errorSettlement", SettlementType::VILLAGE),
 isRunning(other.isRunning), planCounter(other.planCounter), actionsLog(move(other.actionsLog)), plans(move(other.plans)),
 settlements(move(other.settlements)), facilitiesOptions(move(other.facilitiesOptions))
 {
