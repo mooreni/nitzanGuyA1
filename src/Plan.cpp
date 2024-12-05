@@ -79,15 +79,7 @@ void Plan::step()
 
 void Plan::printStatus()
 {
-    std::cout << "PlanID: " << plan_id << "\n"
-    << "SettlementName: " << settlement->getName() << "\n"
-    << "PlanStatus: " << Plan::toString(status) << "\n"
-    << "SelectionPolicy: " << selectionPolicy->toString() << "\n"
-    << "LifeQualityScore: " << life_quality_score << "\n"
-    << "EconomyScore: " << economy_score << "\n"
-    << "EnvironmentScore: " << environment_score
-    << Plan::toString(facilities)<< "\n"
-    << Plan::toString(underConstruction) << "\n";
+    std::cout << Plan::toString();
 }
 
 const vector<Facility*>& Plan::getFacilities() const
@@ -116,7 +108,7 @@ const string Plan::toString() const
         << "EconomyScore: " << economy_score << "\n"
         << "EnvironmentScore: " << environment_score << "\n"
         << Plan::toString(facilities)
-        << Plan::toString(underConstruction) << "\n";
+        << Plan::toString(underConstruction);
 
     return s.str();
 }
