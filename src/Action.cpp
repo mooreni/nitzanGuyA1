@@ -298,7 +298,6 @@ void BackupSimulation::act(Simulation &simulation)
     backup=nullptr;
     backup = new Simulation(simulation);
     complete();
-
 }
 
 BackupSimulation *BackupSimulation::clone() const

@@ -180,7 +180,7 @@ Settlement & Simulation::getSettlement(const string &settlementName)
             return *settlement;  // Return the place of the matching settlement
         }
     }
-    return nullSettlement;  // Return nullptr if no match is found
+    return nullSettlement;  // Return a default settlement if no match is found
 }
 
 Plan& Simulation::getPlan(const int planID)
@@ -257,7 +257,6 @@ actionsLog(), plans(), settlements(), facilitiesOptions()
         p.partialMovePlan(other.plans[i]);
         plans.push_back(p);
     }
-
 }
 
 //Copy Assignment Operator
